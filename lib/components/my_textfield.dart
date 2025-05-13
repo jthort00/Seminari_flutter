@@ -1,35 +1,40 @@
 import 'package:flutter/material.dart';
 
 class MyTextfield extends StatelessWidget {
-  final controller;
+  final TextEditingController controller;
   final String hintText;
   final bool obscureText;
 
   const MyTextfield({
-    super.key,
-    this.controller,
-    this.hintText = '',
-    this.obscureText = false,
-  });
+    Key? key,
+    required this.controller,
+    required this.hintText,
+    required this.obscureText,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 25.0),
-      child: TextField(
-        controller: controller,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.deepPurple[100]!), 
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.deepPurple[200]!),
-          ),
-          hintText: hintText,
-          hintStyle: TextStyle(color: Colors.deepPurple[300]),
-          fillColor: Colors.deepPurple[50],
-          filled: true,
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      style: const TextStyle(
+        color: Colors.black, // Set text color to black for better visibility
+        fontSize: 16, // Adjust font size if needed
+      ),
+      decoration: InputDecoration(
+        hintText: hintText,
+        hintStyle: const TextStyle(
+          color: Colors.grey, // Hint text color
+        ),
+        filled: true,
+        fillColor: Colors.white, // Background color of the text field
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide.none,
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 14.0,
+          horizontal: 16.0,
         ),
       ),
     );

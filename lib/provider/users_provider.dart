@@ -4,6 +4,8 @@ import '../services/UserService.dart';
 
 class UserProvider with ChangeNotifier {
   List<User> _users = [];
+  User? _registeredUser;
+  User? get registeredUser => _registeredUser;
   bool _isLoading = false;
   String? _error;
 
@@ -31,6 +33,20 @@ class UserProvider with ChangeNotifier {
     } catch (e) {
       _setError('Error loading users: $e');
       _users = [];
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> loadRegisteredUser(String id) async {
+    _setLoading(true);
+    _setError(null);
+
+    try {
+      _registeredUser = await UserService.getUserById(id);
+      notifyListeners();
+    } catch (e) {
+      _setError('Error loading registered user: $e');
     } finally {
       _setLoading(false);
     }
@@ -103,4 +119,23 @@ class UserProvider with ChangeNotifier {
       return false;
     }
   }
+
+
+  Future <void> editarUsuari(User editedUser) async {
+    _setLoading(true);
+    _setError(null);
+
+    try {
+      await UserService.updateUser(_registeredUser!.id!, editedUser);
+      final userDataActu = await UserService.getUserById(_registeredUser!.id!);
+      _registeredUser = userDataActu;
+      _users = await UserService.getUsers();
+      notifyListeners();
+    } catch (e) {
+      _setError('Error updating user: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
 }
